@@ -1,9 +1,28 @@
-import numpy as np
+## practice spline model
+## reading data at local machine
 import pandas as pd
+import numpy as np
+import scipy.interpolate as inter
 import matplotlib.pyplot as plt
-from itertools import chain
-import random as rn
-from kaggle.competitions import twosigmanews
-# You can only call make_env() once, so don't lose it!
-env = twosigmanews.make_env()
-print('Done!')
+
+############# setting pd #############
+# Set ipython's max row display
+pd.set_option('display.max_row', 100)
+
+# Set iPython's max column width to 20
+pd.set_option('display.max_columns', 20)
+
+temps = pd.read_csv("~/Documents/Stats/6643Longitudinal/homework/HW5/global_temp_anomalies.csv", names=['year', 'temp'])
+# show the head
+print(temps.head(5))
+
+## the header, col names
+print(temps.columns)
+
+## plot
+plt.plot(temps['year'], temps['temp'], 'go')
+plt.xlabel('Year')
+plt.ylabel('Temperature')
+plt.show()
+
+## spline model with canned function
