@@ -1,9 +1,7 @@
-## practice spline model
-## reading data at local machine
-import pandas as pd
-import numpy as np
-import scipy.interpolate as inter
+# practice spline model
+# reading data at local machine
 import matplotlib.pyplot as plt
+import pandas as pd
 
 ############# setting pd #############
 # Set ipython's max row display
@@ -16,13 +14,13 @@ temps = pd.read_csv("~/Documents/Stats/6643Longitudinal/homework/HW5/global_temp
 # show the head
 print(temps.head(5))
 
-## the header, col names
+# the header, col names
 print(temps.columns)
 
-## plot
+# plot
 plt.plot(temps['year'], temps['temp'], 'go')
 plt.xlabel('Year')
 plt.ylabel('Temperature')
 plt.show()
 
-## spline model with canned function
+# spline model with canned function
