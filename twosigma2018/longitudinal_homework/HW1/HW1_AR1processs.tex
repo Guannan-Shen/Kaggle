@@ -1,0 +1,93 @@
+\documentclass[12pt, utf8]{article}
+\usepackage[utf8]{inputenc}
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amsmath} % Advanced math typesetting
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=0.75in,rmargin=0.75in}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{0cm}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+
+\pagestyle{fancy}
+\fancyhead[C]{\rule{.5\textwidth}{4\baselineskip}}% Add something BIG in the header
+\setlength{\headheight}{15pt}% ...at least 14.5pt
+\fancyhf{}
+\chead{6643 HW1}
+\rhead{\today}
+\lhead{Guannan Shen}
+\rfoot{Page \thepage}
+ 
+
+\usepackage{extramarks}
+\usepackage{lastpage}
+\usepackage{chngpage}
+\usepackage{soul}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{framed}
+
+\begin{document}
+
+
+
+
+\newenvironment{problem}{\begin{framed}\begin{bfseries}}{\end{bfseries}\end{framed}\vspace{11pt}}
+
+
+\begin{problem}
+
+1. Consider a first-order autoregressive process:
+  
+a. Determine $E(\varepsilon_t)$
+
+b. Determine $Cov(\varepsilon_t , \varepsilon_{t+h})$
+
+c. Determine $Corr(\varepsilon_t , \varepsilon_{t+h})$
+
+d. Is $\varepsilon_t$ a stationary process?
+\end{problem}
+
+a.
+Since $Z_t \sim N(0, \sigma^2) $:
+\begin{eqnarray}
+E(\varepsilon_t) &=& E(\sum_{j = 0}^\infty \phi^j Z_{t-j} ) \\
+&=& \sum_{j = 0}^\infty [E(\phi^j Z_{t-j} )] \\
+&=& \sum_{j = 0}^\infty [\phi^j \times E(Z_{t-j})] \\
+&=& E(Z_{t-j}) \times \sum_{j = 0}^\infty \phi^j  \\
+&=& 0 \times \sum_{j = 0}^\infty \phi^j \\
+&=& 0
+\end{eqnarray}
+b. Since $ E(Z_t) = 0, Var(Z_t) = \sigma^2$, \\
+we have $ E(Z_t^2) = Var(Z_t)^2 + E(Z_t)^2 = \sigma^2 $, \\
+we also know that $ \left| \phi \right| < 1 $, \\
+and $Z_t$ are \textit{i.i.d}:
+\begin{eqnarray}
+Cov(\varepsilon_t , \varepsilon_{t+h}) &=& 	E(\varepsilon_t \varepsilon_{t+h}) - E(\varepsilon_t)E(\varepsilon_{t+h}) \\
+&=& E(\varepsilon_t \varepsilon_{t+h}) \\
+&=& E[(\sum_{j = 0}^\infty \phi^j Z_{t-j}) (\sum_{i = 0}^\infty \phi^i Z_{t+h-i})] \\ 
+&=& E[\overbrace{\sum_{j = 0}^\infty \sum_{i = 0}^\infty (\phi^j Z_{t-j} \phi^i Z_{t+h-i})}^{t-j \neq t+h - i} + \overbrace{\sum_{i = 0}^\infty (\phi^{i - h + i} Z_{t+h-i}^2) }^{t-j = t+h -i} ] \\
+&=& \overbrace{ E(\sum_{j = 0}^\infty  \phi^j Z_{t-j})E(\sum_{i = 0}^\infty \phi^i Z_{t+h-i})}^{t-j \neq t+h - i} + \overbrace{E (\sum_{i = 0}^\infty \phi^{i - h + i} Z_{t+h-i}^2)}^{t-j = t+h -i} ] \\
+&=&  E(Z_{t-j}) \sum_{j = 0}^\infty \phi^j E(Z_{t+h-i}) \sum_{i = 0}^\infty \phi^i + E(Z_{t+h-i}^2)) \sum_{i = 0}^\infty \phi^{i - h + i} \\
+&=& 0 \quad + \quad \sigma^2 (\dfrac{\phi^{-h}}{1 - \phi^2}) \\
+&=& \phi^{-h}(1- \phi^2)^{-1}\sigma^2
+\end{eqnarray}
+c. 
+\begin{eqnarray}
+Corr(\varepsilon_t , \varepsilon_{t+h}) &=& \dfrac{Cov(\varepsilon_t , \varepsilon_{t+h})}{\sqrt{Var(\varepsilon_t)Var(\varepsilon_{t+h})}} \\ 
+Var(\varepsilon_t) &=& Cov(\varepsilon_t , \varepsilon_t) \\
+&=& (1- \phi^2)^{-1}\sigma^2 \\ 
+Var(\varepsilon_{t+h}) &=& Cov(\varepsilon_{t+h}, \varepsilon_{t+h}) \\ 
+&=& (1- \phi^2)^{-1}\sigma^2 \\ 
+\text{Thus, } Corr(\varepsilon_t , \varepsilon_{t+h}) &=& \dfrac{\phi^{-h}(1- \phi^2)^{-1}\sigma^2}{(1- \phi^2)^{-1}\sigma^2} \\
+&=& \phi^{-h}
+\end{eqnarray}
+d. AR(1) is a weakly stationary process, since the mean and variance is the same for all t and the covariance between $ \varepsilon_t , \varepsilon_{t+h}$ is the same for all t. 
+
+\end{document}

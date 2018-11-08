@@ -1,0 +1,201 @@
+\documentclass[12pt, utf8]{article}
+\usepackage[utf8]{inputenc}
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amsmath} % Advanced math typesetting
+\setcounter{MaxMatrixCols}{20}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=0.75in,rmargin=0.75in}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{0cm}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+
+\pagestyle{fancy}
+\fancyhead[C]{\rule{.5\textwidth}{4\baselineskip}}% Add something BIG in the header
+\setlength{\headheight}{15pt}% ...at least 14.5pt
+\fancyhf{}
+\chead{6643 HW2}
+\rhead{\today}
+\lhead{Guannan Shen}
+\rfoot{Page \thepage}
+ 
+
+\usepackage{extramarks}
+\usepackage{lastpage}
+\usepackage{chngpage}
+\usepackage{soul}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{framed}
+
+\begin{document}
+
+
+
+
+\newenvironment{problem}{\begin{framed}\begin{bfseries}}{\end{bfseries}\end{framed}\vspace{14pt}}
+
+
+\begin{problem}
+
+3. Derive the distribution of $ $ if $ L = a^t\boldsymbol{X}$ from some $ n\times 1$ vector $a$. \\
+Linear form result.  
+\end{problem}
+Since $n \times 1$ vector $\boldsymbol{Y} \sim N(\mu, \Sigma)$,
+for a $m\times n$ matrix $\boldsymbol{A}$, we have $\boldsymbol{AY} \sim N(\boldsymbol{A}\mu, \boldsymbol{A}\Sigma \boldsymbol{A^{t}})$. \\
+And, 
+\begin{align*} 
+\boldsymbol{\beta} &=  \boldsymbol{AY} =  \boldsymbol{(X^{t}X)^{-}X^{t}Y} \sim N[\boldsymbol{(X^{t}X)^{-}X^{t}X\beta}, \boldsymbol{(X^{t}X)^{-}X^{t}X(X^{t}X)^{-}\sigma^{2}}]
+\end{align*}
+Thus, 
+\begin{equation} 
+\begin{split}
+\boldsymbol{L}\widetilde{\beta} & = a^t\boldsymbol{X\beta} \\
+ & \sim N[\boldsymbol{a^{t} \overbrace{X(X^{t}X)^{-}X^{t}}^{P}X\beta}, \boldsymbol{a^{t} \overbrace{X(X^{t}X)^{-}X^{t}}^{P}X(X^{t}X)^{-}(a^tX)^t\sigma^{2}}] \\
+& \sim N[\boldsymbol{a^tX \beta},\boldsymbol{a^tX (X^{t}X)^{-}(a^tX)^t \sigma^2}] \\
+& \sim N[\boldsymbol{L\beta},\boldsymbol{L(X^{t}X)^{-}L^{t}\sigma^2}]
+\end{split}
+\end{equation}
+
+\begin{problem}
+8. For the Myostatin data, note that the population mean for the myostatin group at 48 hours is $\mu + \kappa_5$ for the one-way effects model (see the course notes).\\
+a. Myostatin group at 48 hours; means model. \\
+b. Myostatin group at 48 hours; two-way effects model. \\
+c. Myostatin group, difference between 48 and 72 hours, one-way effects model. \\
+d. Myostatin group, difference between 48 and 72 hours, two-way effects model. 
+\end{problem}
+We know: \\
+Two-way effects model: $Y_{ijk} = \mu + \alpha_i + \tau_j + \gamma_{ij} + \epsilon_{ijk} $\\
+One-way effects model: $Y_{ij} = \mu + \kappa_i + \epsilon_{ij}$\\
+Means model: $Y_{ijk} = \mu_{ij} + \epsilon_{ijk} $ \\              
+a. $\mu_{22}$ \\
+b. $\mu + \alpha_2 + \tau_2 + \gamma_{22}$ \\
+c. $\kappa_6 - \kappa_5 $\\
+d. $\tau_3 + \gamma_{23} - \tau_2 - \gamma_{22}$
+
+\begin{problem}
+9. Show that $\widetilde{\beta} = \boldsymbol{(X^{t}X)^{-}X^tY} $ satisfies the normal equations.
+\end{problem}
+Since $n \times 1$ vector $\boldsymbol{Y} \sim N(\boldsymbol{X\beta}, \boldsymbol{I}\sigma^2)$,
+for a $m\times n$ matrix $\boldsymbol{A}$, we have $\boldsymbol{AY} \sim N(\boldsymbol{AX\beta}, \boldsymbol{A} \boldsymbol{A^{t}}\sigma^2) $. \\
+Here, since $ \boldsymbol{ ((X^{t}X)^{-}X^t)^t = (X^t)^t[(X^tX)^-]^t = X(X^{t}X)^{-} }$
+\begin{equation} 
+\begin{split}
+\boldsymbol{\widetilde{\beta}}  = \boldsymbol{AY} &=  \boldsymbol{(X^{t}X)^{-}X^tY} \\
+& \sim N[\boldsymbol{(X^{t}X)^{-}X^tX\beta}, \boldsymbol{(X^{t}X)^{-}X^{t}((X^{t}X)^{-}X^t)^t\sigma^{2}}] \\
+& \sim N[\boldsymbol{(X^{t}X)^{-}X^{t}X\beta}, \boldsymbol{(X^{t}X)^{-}X^{t}X(X^{t}X)^{-}\sigma^{2}}]
+\end{split}
+\end{equation}
+
+\begin{problem}
+11. \\
+a. Write full-rank and less-than-full-rank models if there is a group variable with 4 levels (i.e., 4 groups), a time variable that is treated as a continuous variable (linear term only), plus group*time interaction.  How many columns are in X for each approach? \\
+b. If time points are unequally spaced then would it be appropriate to treat time as a class variable?  Explain.
+\end{problem}
+$h$ denotes group, $i$ denotes subject ID, $j$ denotes time. \\
+a. \\ 
+There are 8 columns in $\boldsymbol{X}$ for full-rank model. 
+
+\begin{multline*}
+ Y_{ij} = \beta_0 + \beta_{time}x_{time ij} + \beta_{group1}x_{group1j} + \beta_{group2}x_{group2j} + \beta_{group3}x_{group3j} \\  +  \beta_{timegroup1}x_{time ij} \cdot x_{group1j} +  \beta_{timegroup2}x_{time ij} \cdot x_{group2j} +  \beta_{timegroup3}x_{time ij} \cdot x_{group3j} + \epsilon_{ij} 
+\end{multline*}
+There are 10 columns in $\boldsymbol{X}$ for less-than-full-rank model.
+\begin{align*}
+Y_{hij} = \beta_0 + \beta_{time}x_{time ij} + \kappa_h + \gamma_h \cdot x_{time ij} + \epsilon_{hij}
+\end{align*}
+b. If time points are unequally spaced, it is not appropriate to treat time as a class variable. Discrete-time approaches are based on the assumption that all measurements are equally spaced. It would also cost more degree of freedoms. Also, in this case, polynomial trends might be modeled through "continuous time".   \\ 
+
+\begin{problem}
+12. Consider a study where subjects in 3 groups (e.g., race or treatment) are observed over 3 times and some health outcome, y, is measured.  Unless otherwise mentioned, include a random intercept for subjects to account for the repeated measures.  For simplicity, use 2 subjects per group. \\
+a. Consider modeling group and time as class variables, plus interaction.  Write statistical models and the X matrix for the following cases. \\
+  i. No restriction placed on the model.  I.e., write the less-than-full-rank statistical model. \\
+  ii. A set-to-0 restriction is placed on the parameters associated with highest levels. \\
+  iii. A sum-to-0 restriction is placed on the parameters associated with highest levels. \\
+b. Show that the linear trend for one group compared to another (say Group A versus B) is estimable by showing that $\boldsymbol{L=LH}$, where the Moore-Penrose inverse is used in calculating $\boldsymbol{H}$.  First you need to construct $\boldsymbol{L}$. (As a check, repeat using SAS’s g-inverse in calculating H, but you don’t need to turn that in.
+\end{problem}
+a.\\
+i. \\
+Let $h$ denotes group, $i$ denotes subject ID, $j$ denotes time. \\
+\begin{align*}
+Y_{hij} = \mu + \kappa_h + \tau_j + \gamma_{hj} + \epsilon_{hij}
+\end{align*}
+$\boldsymbol{X_{18 \times 16}} = $  
+\[
+\begin{bmatrix}
+1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+1 & 1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\
+1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0\\
+\vdots &  &  &  &  &  &  &  & \cdots &  &  &  &  &  & & \vdots\\
+1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0\\
+1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1
+\end{bmatrix}
+\]
+ii. set-to-zero\\
+\begin{multline*}
+ Y_{ij} = \beta_0  + \beta_{group1}x_{group1j} + \beta_{group2}x_{group2j} + \beta_{time1}x_{time 1i} + \beta_{time2}x_{time 2i}\\  +  \beta_{group1time1}x_{group1j} \cdot x_{time 1i}   +  \beta_{group1time2}x_{group1j} \cdot x_{time 2i} \\ +  \beta_{group2time1}x_{group2j} \cdot x_{time 1i}+ \beta_{group2time2}x_{group2j} \cdot x_{time 2i}+\epsilon_{ij} 
+\end{multline*}
+$\boldsymbol{X_{18 \times 9}} = $  
+\[
+\begin{bmatrix}
+1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\ 
+1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\vdots  & & & & \cdots & & & & \vdots\\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\ 
+1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}
+\]
+iii. sum-to-zero \\
+\begin{multline*}
+ Y_{ij} = \beta_0  + \beta_{group1}x_{group1j} + \beta_{group2}x_{group2j} + \beta_{time1}x_{time 1i} + \beta_{time2}x_{time 2i}\\  +  \beta_{group1time1}x_{group1j} \cdot x_{time 1i}   +  \beta_{group1time2}x_{group1j} \cdot x_{time 2i} \\ +  \beta_{group2time1}x_{group2j} \cdot x_{time 1i}+ \beta_{group2time2}x_{group2j} \cdot x_{time 2i}+\epsilon_{ij} 
+\end{multline*}
+$\boldsymbol{X_{18 \times 9}} =$  
+\[
+\begin{bmatrix}
+1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 0 \\ 
+1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 0 \\
+1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+\vdots  & & & & \cdots & & & & \vdots\\
+1 & 0 & 0 & 1 & 0 & 0 & 0 & 1 & 0 \\ 
+1 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 1 \\
+1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+\end{bmatrix}
+\]
+b. Compare the linear trend between Group A and Group B $(-2, 0, 2)$\\ 
+$ \boldsymbol{L} = $
+\[
+\begin{bmatrix}
+0 & 0 & 0 & 0 & 0 & 0 & 0 & -2 & 0 & 2 & 2 & 0 & -2 & 0 & 0 & 0
+\end{bmatrix}
+\]
+\begin{eqnarray}
+\boldsymbol{L}  &= a^t\boldsymbol{X} 
+\end{eqnarray} 
+\begin{eqnarray}
+\boldsymbol{H} &= \boldsymbol{(X^{t}X)^{-}X^tX}
+\end{eqnarray}
+Thus,
+\begin{equation}
+\begin{split}
+\boldsymbol{LH} &= a^t\overbrace{\boldsymbol{X}\boldsymbol{(X^{t}X)^{-}X^t}}^{P}\boldsymbol{X} \\
+ &= a^t\boldsymbol{X} \\
+ &= \boldsymbol{L}
+\end{split}
+\end{equation}
+
+\begin{problem}
+14. Create your tests and estimates based on what you think is interesting.  With the output, write up your results in a few sentences.
+\end{problem}
+From estimates, there is no difference $(p = 0.2503 > 0.05)$ between the first and the fifth time points of the y values in ch group.  \\
+There is no difference $(p = 0.8735 > 0.05)$ between the first and the fifth time points of the y values in co group. \\
+From contrasts, there is no difference $(p = 0.2405 > 0.05)$ among 3 groups of the linear trend in time. \\
+At least one quadratic trend of time among 3 groups is different $(p < 0.0001)$  from the other two groups.
+\end{document}

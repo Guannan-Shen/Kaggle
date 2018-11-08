@@ -1,0 +1,204 @@
+\documentclass[12pt, utf8]{article}
+\usepackage[utf8]{inputenc}
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{amsmath} % Advanced math typesetting
+\setcounter{MaxMatrixCols}{20}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=0.75in,rmargin=0.75in}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\setlength{\parindent}{0cm}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\usepackage{mathtools}
+
+\pagestyle{fancy}
+\fancyhead[C]{\rule{.5\textwidth}{4\baselineskip}}% Add something BIG in the header
+\setlength{\headheight}{15pt}% ...at least 14.5pt
+\fancyhf{}
+\chead{6643 HW3 GRV}
+\rhead{\today}
+\lhead{Guannan Shen}
+\rfoot{Page \thepage}
+ 
+
+\usepackage{extramarks}
+\usepackage{lastpage}
+\usepackage{chngpage}
+\usepackage{soul}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{graphicx,float,wrapfig}
+\usepackage{ifthen}
+\usepackage{listings}
+\usepackage{courier}
+\usepackage{framed}
+
+\begin{document}
+
+\newcommand\scalemath[2]{\scalebox{#1}{\mbox{\ensuremath{\displaystyle #2}}}}
+
+
+\newenvironment{problem}{\begin{framed}\begin{bfseries}}{\end{bfseries}\end{framed}\vspace{14pt}}
+
+
+\begin{problem}
+(1) Consider a basic science experiment conducted where cell counts are measured at 4 time points for samples taken from individual subjects or animals.  A linear mixed model will be fit for the data (perhaps after log transformation), and fixed effects will be included for time, and possibly treatment group as well as their interaction. Determine the structure for $\boldsymbol{V}_i$ if a random intercept for subjects will be included, plus an $\boldsymbol{AR(1)}$ structure for the error covariance matrix ($\boldsymbol{R}_i$).  What does the combination of non-simple $\boldsymbol{R}$ and $\boldsymbol{G}$ allow you to do in modeling covariances that using only one cannot do?  Discuss in a few sentences.
+\end{problem}
+
+The $\boldsymbol{V}_i$ is a $4 \times 4$ matrix for each sample.\\
+1. If the variance covariance structure of a simple $\boldsymbol{R}_i$ and random intercept for $\boldsymbol{G}$ is applied, we end up with a CS (Compound symmetry) structure for $\boldsymbol{V}_i$. With this combination, the $\boldsymbol{V}_i$ has equal variance $\sigma^2_b + \sigma^2_{\epsilon}$ along the diagonal, and equal covariance $ \sigma^2_b$ off the diagonal. Thus, it is impossible to have decaying covariance as distance between time points increasing under this structure. \\
+2. If there is no random intercept and only $\boldsymbol{AR(1)}$ of $\boldsymbol{R}_i$, it is possible to have decaying covariance. However, compared with CS $\boldsymbol{G}$ plus $\boldsymbol{AR(1)}$ of $\boldsymbol{R}_i$, the decaying here is much faster, in a way of $ \phi \quad \phi^2 \quad \phi^3$. With more complex $\boldsymbol{V}_i$, it is capable to adjust the speed of the decaying. Since the covariances are $  \sigma^2_{b}+\phi \quad \sigma^2_{b}+\phi^2 \quad \sigma^2_{b}+\phi^3$, this structure is more flexible on the speed of decaying with the addition of $  \sigma^2_{b}$. 
+
+
+\begin{problem}
+(2) One model we used for the Mt. Kilimanjaro data included random effects for subject, up to the quadratic term (plus covariances between random effects), along with a simple $\boldsymbol{R}$  structure.  (We did find at least one model with a better AIC, but let’s focus on this one for now.)  We talked about how including multiple random effects can induce a covariance structure that is time sensitive (or in this case, altitude sensitive).  Show this by considering a simple data set and model.  In particular, let times be t=0, 1, 2, and consider a model that includes a random intercept and slope for time by subject, plus covariance between them (i.e., UN structure in $\boldsymbol{G}$).  Show that it is possible to obtain $Cov(Y_{i1},Y_{i2}) > Cov(Y_{i1},Y_{i3}) < Cov(Y_{i2},Y_{i3})$, i.e., decaying covariance as distance between time points is increased.  For what covariance parameter values will these hold?
+\end{problem}
+We have Z, G, R, V as following: \\
+Z = 
+\[
+\begin{bmatrix}
+1 & 0 \\
+1 & 1 \\
+1 & 2 
+\end{bmatrix}
+\]
+G = 
+\[
+\begin{bmatrix}
+\sigma^2_{I} & \sigma_{IS} \\
+\sigma_{IS} & \sigma^2_{S}
+\end{bmatrix}
+\]
+R = 
+\[
+\begin{bmatrix}
+\sigma^2_{\epsilon} & 0 & 0 \\
+0 & \sigma^2_{\epsilon} & 0 \\
+0 & 0 & \sigma^2_{\epsilon} 
+\end{bmatrix}
+\]
+V = $\boldsymbol{ZGZ^t + R} = $
+\[
+\begin{bmatrix}
+1 & 0 \\
+1 & 1 \\
+1 & 2 
+\end{bmatrix}
+\begin{bmatrix}
+\sigma^2_{I} & \sigma_{IS} \\
+\sigma_{IS} & \sigma^2_{S}
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1 \\
+0 & 1 & 2
+\end{bmatrix}
++ 
+\begin{bmatrix}
+\sigma^2_{\epsilon} & 0 & 0 \\
+0 & \sigma^2_{\epsilon} & 0 \\
+0 & 0 & \sigma^2_{\epsilon} 
+\end{bmatrix}
+= 
+\]
+\[
+\begin{bmatrix}
+\sigma^2_{I}               & \sigma_{IS} \\
+\sigma^2_{I} + \sigma_{IS} & \sigma^2_{S} + \sigma_{IS} \\
+\sigma^2_{I} + 2\sigma_{IS} & 2\sigma^2_{S} + \sigma_{IS} 
+\end{bmatrix}
+\begin{bmatrix}
+1 & 1 & 1 \\
+0 & 1 & 2
+\end{bmatrix}
++ 
+\begin{bmatrix}
+\sigma^2_{\epsilon} & 0 & 0 \\
+0 & \sigma^2_{\epsilon} & 0 \\
+0 & 0 & \sigma^2_{\epsilon} 
+\end{bmatrix}
+= 
+\]
+\[
+\begin{bmatrix}
+\sigma^2_{I} + \sigma^2_{\epsilon}  & \sigma^2_{I} + \sigma_{IS}  & \sigma^2_{I} + 2\sigma_{IS}\\
+\sigma^2_{I} + \sigma_{IS} & \sigma^2_{I} + 2\sigma_{IS} + \sigma^2_{S} + \sigma^2_{\epsilon}  & \sigma^2_{I} + 3\sigma_{IS} + 2\sigma^2_{S}\\
+\sigma^2_{I} + 2\sigma_{IS} & \sigma^2_{I} + 3\sigma_{IS} + 2\sigma^2_{S} & \sigma^2_{I} + 4\sigma_{IS} + 4\sigma^2_{S} + \sigma^2_{\epsilon}
+\end{bmatrix}
+\]
+Regarding the structure of V, it is possible to have decaying covariance as distance between time points is increased. This is true when $\sigma_{IS}$ holds negative value. 
+
+
+\begin{problem}
+(3)Fit the Beta Carotene data using a continuous model for time, including group and group*time in the model.  (For a description of the data, see the file in the HW folder.)  Determine the degree of polynomials for time that is important and sufficient for the model.  For covariance structure, define the UN structure for $\boldsymbol{R}$.\\
+  a. Write your final model, fit it and compare it to the model that used group, time and group*time as class variables.  Which would you go with in a final report?  Explain.  NOTE:  in comparing model AIC’s use method=ML for a more apples-to-apples comparison, particularly when changes are being made to the fixed effects. \\ 
+  b. Write an estimate or contrast statement for your continuous model based on what you think is interesting.  The custom estimate and/or test could involve a subset of the data (e.g., comparing 2 specific groups), or the whole data.
+\end{problem}
+a. \\
+Setting the method = ML, without random effects and repeated type = UN, the final model of continuous time is choosed based on the lowest AIC. Since cubic time model has a AIC of 1243.1, which is smallest and has a difference more than 2 units. \\ 
+The final model is the cubic time model. \\
+$ y_{ij} = \beta_{0ij} + \beta_{group}Group + \beta_2Time + \beta_3Time^2 + \beta_4Time^3 + \beta_5Group\times Time + \beta_6Group\times Time^2 + \beta_7Group\times Time^3$ \\
+Compared with time as class model, this one has a lower AIC 1243.1, more than 2 units lower. Thus I would choose cubic time model in a final report. \\
+\\
+b. \\
+I wrote the estimate and contrast within the cubic time model. \\
+estimate 'BASF (30mg capsules) 12 weeks'\\
+intercept 1 group 0 0 1 0 time 12 time*time 144\\ time*time*time 1728 \\
+group*time 0 0 12 0  group*time*time 0 0 144 0\\ group*time*time*time 0 0 1728 0;\\
+\\
+contrast 'BASF 30mg 60mg Curve Comparison'\\
+group 0 0 1 -1 group*time 0 0 1 -1  group*time*time 0 0 1\\ -1 group*time*time*time 0 0 1 -1;\\
+
+The estimated 12-week y for group 3 is 373.69. \\
+There is no significant difference ($p-value = 0.4461$) in curves between group 3 and group 4.  
+
+
+
+
+\begin{problem}
+(4) Consider a study where children are sampled from schools, and then measured over time.  We will include a random intercept for schools and for subjects within schools (but simple $\boldsymbol{R}$). Determine $\boldsymbol{V}_h$, the covariance matrix for school h, if there are 3 children sampled from this school, where the first two kids have 3 measures and the last has 2.  You might find it helpful start by writing the model for outcome $Y_{hij}$ and determining the design matrix for the random effects.  (You can just write something generic for the fixed-effect part of the model.) 
+\end{problem}
+This problem is about nesting. $h = school, i = child, j = time$. There are 3 children in this school and the first two kids have 3 measures and the last has 2. \\
+\begin{equation}
+Y_{hij} = \boldsymbol{X_i \beta} + b_h + b_{i(h)} + \epsilon_{ij} 
+\end{equation}
+$\boldsymbol{Z} = $
+\[
+\begin{bmatrix}
+1 & 1 & 0 & 0  \\
+1 & 1 & 0 & 0  \\
+1 & 1 & 0 & 0  \\
+1 & 0 & 1 & 0  \\
+1 & 0 & 1 & 0  \\
+1 & 0 & 1 & 0  \\
+1 & 0 & 0 & 1  \\
+1 & 0 & 0 & 1
+\end{bmatrix}
+\]
+$\boldsymbol{G} = $
+\[
+\begin{bmatrix}
+\sigma^2_{S} & 0 & 0 & 0   \\
+ 0 & \sigma^2_{C}  & 0 & 0 \\
+ 0 & 0  & \sigma^2_{C} & 0 \\
+ 0 & 0 & 0 & \sigma^2_{C}
+\end{bmatrix}
+\]
+$\boldsymbol{R}$ is simple diagonal matrix $\sigma^2_{\epsilon}\boldsymbol{I}$ \\
+So we have $8 \times 8 \quad \boldsymbol{V}_h = $
+\[
+\scalemath{0.75}{
+\begin{bmatrix}
+\sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} \\ 
+\sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} \\
+\sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon}& \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} \\
+\sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} & \sigma^2_{S} \\
+\sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} & \sigma^2_{S} \\
+\sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon}& \sigma^2_{S} & \sigma^2_{S} \\
+\sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon} & \sigma^2_{S} + \sigma^2_{C} \\ 
+\sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} & \sigma^2_{S} + \sigma^2_{C} & \sigma^2_{S} + \sigma^2_{C} + \sigma^2_{\epsilon}
+\end{bmatrix}
+}
+\]
+
+\end{document}

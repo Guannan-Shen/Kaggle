@@ -1,0 +1,108 @@
+---
+title: "6643 HW1"
+author: "Guannan Shen"
+date: "September 9, 2018"
+output: 
+  pdf_document:
+    latex_engine: lualatex
+    number_sections: yes
+    toc: yes
+    toc_depth: 5
+  html_document:
+    number_sections: yes
+    theme: united
+    toc: yes
+    toc_depth: 5
+    toc_float: yes
+  word_document:
+    toc: yes
+    toc_depth: '5'
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(tidy.opts=list(width.cutoff=60),tidy=TRUE)
+knitr::opts_chunk$set(engine = "R")
+getwd()                                          ## get the path work directory
+                                                 ## cache = F, if cache = T, will not revaluate code chunk everytime
+## double or more space to insert a line break
+```
+
+# Question 2
+The data cholesterol.txt contains cholesterol levels (adapted from Rosner, 2006).  The data are a sample of cholesterol levels taken from 24 hospital employees who were on a standard American diet and who agreed to adopt a vegetarian diet for one month.  Serum cholesterol measurements (mcg/dl) were made before adopting the vegetarian diet and one month after.
+```{r Q2, echo=TRUE, warning=FALSE}
+library(readr)
+library(tidyverse)
+cholesterol <- read.csv("HW1_cholesterol.csv")
+# add the subject id
+dim(cholesterol)
+cholesterol <- cholesterol %>% mutate(subject_id = seq(1:24))
+# add change
+cholesterol_w <- cholesterol %>% mutate(change = after - before)
+# now model the first 3 models
+# change-score model
+m1_change_score <- glm(change ~ 1, data = cholesterol_w, family = gaussian)
+summary(m1_change_score)
+
+# baseline as covariate model
+m2_baseline <- glm(after ~ before, data = cholesterol_w, family = gaussian)
+summary(m2_baseline)
+# hybrid model
+m3_hybrid <- glm(change ~ before, data = cholesterol_w, family = gaussian)
+summary(m3_hybrid)
+# now make the long form data
+cholesterol_l <- cholesterol %>% gather(key = time, value = cholesterol, before:after)
+
+# longitudinal model 
+library(lme4)
+class(cholesterol_l$time)
+lmm_prepost <- lmer(cholesterol ~ time + (1 | subject_id), data = cholesterol_l) 
+summary(lmm_prepost)
+paste("The AIC of lmm:", AIC(lmm_prepost))
+
+
+
+```
+
+# Question 3
+
+```{r Q3, echo=TRUE, warning=FALSE}
+library(astsa)
+global_temp <- read.csv("HW1_global_temp_anomalies.csv", header = FALSE)
+colnames(global_temp) <- c("year", "temp")
+# simple linear model
+lm_temp <- glm(temp ~ year, data = global_temp, family = gaussian)
+summary(lm_temp)
+global_temp$res_lm <- resid(lm_temp)
+ggplot(global_temp, aes(year, res_lm)) +
+  geom_point() +
+  geom_smooth() +
+  theme_bw() +
+  labs(y = "residuals", subtitle = "residual plot of linear model")
+ggsave("Residual_plot_of_linear_model.png", dpi = 600)
+
+## fit ar(1) model for time series data
+# using ts() to make a univariate time series object
+temp_ts <-  ts(global_temp$temp)
+ar_temp <- arima(temp_ts, order = c(1,0,0))
+coef(ar_temp)
+global_temp$res_ar <- residuals(ar_temp)
+
+
+## residual plot 
+ggplot(global_temp, aes(year, res_ar)) +
+  geom_point() +
+  geom_smooth() +
+  theme_bw() +
+  labs(y = "residuals", subtitle = "residual plot of AR(1) model")
+ggsave("Residual_plot_of_AR1_model.png", dpi = 600)
+
+## predict value 
+global_temp$y_hat <- global_temp$temp - global_temp$res_ar 
+lm_pred <- glm(y_hat ~ year, data=global_temp, family = gaussian)
+coef(lm_pred)
+
+# average change per decade
+paste("average increase in temp. per decade:", round(10*coef(lm_pred)[2],4))
+
+```
