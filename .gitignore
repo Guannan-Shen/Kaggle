@@ -7,6 +7,7 @@
 *.rda
 *.csv
 *.txt
+*.zip
 *.dat
 *.xls*
 *.sas7bdat
@@ -15,5 +16,6 @@
 DataRaw/
 DataProcessed/
 .DS_Store
-.Rproj.user
+# the history Rstudio Proj
 .Rhistory
+.Rproj.user
